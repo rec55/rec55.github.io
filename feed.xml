@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/">
+    <title>rec55</title>
+    <link href="https://rec55.github.io/feed.xml" rel="self" />
+    <link href="https://rec55.github.io" />
+    <updated>1970-01-01T06:00:00+06:00</updated>
+    <author>
+        <name>Rec 55 - Кыргыз үн коштоосу</name>
+    </author>
+    <id>https://rec55.github.io</id>
+
+</feed>

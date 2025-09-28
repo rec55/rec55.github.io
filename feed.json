@@ -1,0 +1,13 @@
+{
+    "version": "https://jsonfeed.org/version/1",
+    "title": "rec55",
+    "description": "",
+    "home_page_url": "https://rec55.github.io",
+    "feed_url": "https://rec55.github.io/feed.json",
+    "user_comment": "",
+    "author": {
+        "name": "Rec 55 - Кыргыз үн коштоосу"
+    },
+    "items": [
+    ]
+}
