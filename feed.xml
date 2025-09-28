@@ -3,10 +3,28 @@
     <title>rec55</title>
     <link href="https://rec55.github.io/feed.xml" rel="self" />
     <link href="https://rec55.github.io" />
-    <updated>1970-01-01T06:00:00+06:00</updated>
+    <updated>2025-09-29T02:13:37+06:00</updated>
     <author>
         <name>Rec 55 - Кыргыз үн коштоосу</name>
     </author>
     <id>https://rec55.github.io</id>
 
+    <entry>
+        <title>&quot;Энканто&quot; кыргызча</title>
+        <author>
+            <name>Rec 55 - Кыргыз үн коштоосу</name>
+        </author>
+        <link href="https://rec55.github.io/enkanto-kyrgyzcha.html"/>
+        <id>https://rec55.github.io/enkanto-kyrgyzcha.html</id>
+        <media:content url="https://rec55.github.io/media/posts/2/689254b939876aa66d0c6b44_enkanto-kyrgyzcha.jpeg" medium="image" />
+
+        <updated>2025-09-29T02:05:15+06:00</updated>
+            <summary></summary>
+        <content type="html">
+            <![CDATA[
+                    <p><img src="https://rec55.github.io/media/posts/2/689254b939876aa66d0c6b44_enkanto-kyrgyzcha.jpeg" class="type:primaryImage" alt="" /></p>
+                <div class="post__iframe"><iframe loading="lazy" width="779" height="438" style="width: 779px; height: 438px;" src="https://www.youtube.com/embed/02BQKn0LKkU?si=ja7Q41IenrMaU_0u" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="allowfullscreen"></iframe></div>
+            ]]>
+        </content>
+    </entry>
 </feed>
