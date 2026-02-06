@@ -144,65 +144,52 @@ const WORKS_CATALOG = [
   }
 ];
 
-function initMobileNavCollapse(nav) {
-  const header = nav.closest('.site-header');
-  if (!header) return;
-  if (header.dataset.mobileNavInit === 'true') return;
-  header.dataset.mobileNavInit = 'true';
+function initNavMoreToggle(nav) {
+  if (nav.dataset.navMoreInit === 'true') return;
+  nav.dataset.navMoreInit = 'true';
 
-  if (!nav.id) nav.id = 'siteNav';
+  const links = Array.from(nav.querySelectorAll('a'));
+  const anchor = links.find((link) => link.textContent.trim() === 'Биз жөнүндө');
+  if (!anchor) return;
+
+  const moreWrap = document.createElement('span');
+  moreWrap.className = 'nav-more';
+
+  let node = anchor.nextSibling;
+  while (node) {
+    const next = node.nextSibling;
+    if (node.nodeType === 1 && node.matches('a')) {
+      moreWrap.appendChild(node);
+    }
+    node = next;
+  }
+
+  if (moreWrap.children.length === 0) return;
 
   const toggle = document.createElement('button');
   toggle.type = 'button';
-  toggle.className = 'nav-toggle';
-  toggle.setAttribute('aria-label', 'Меню');
-  toggle.setAttribute('aria-controls', nav.id);
+  toggle.className = 'nav-more-toggle';
   toggle.setAttribute('aria-expanded', 'false');
-  toggle.innerHTML = '<span></span><span></span><span></span>';
-  header.insertBefore(toggle, nav);
+  toggle.setAttribute('aria-label', 'Показать меню');
+  toggle.innerHTML = '<span class="nav-more-icon" aria-hidden="true">▼</span>';
 
+  anchor.insertAdjacentElement('afterend', toggle);
+  toggle.insertAdjacentElement('afterend', moreWrap);
+
+  nav.classList.add('nav-has-more', 'nav-more-collapsed');
+
+  const icon = toggle.querySelector('.nav-more-icon');
   const setOpen = (open) => {
-    header.classList.toggle('nav-open', open);
+    nav.classList.toggle('nav-more-open', open);
+    nav.classList.toggle('nav-more-collapsed', !open);
     toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    toggle.setAttribute('aria-label', open ? 'Скрыть меню' : 'Показать меню');
+    if (icon) icon.textContent = open ? '▲' : '▼';
   };
 
   toggle.addEventListener('click', () => {
-    setOpen(!header.classList.contains('nav-open'));
+    setOpen(!nav.classList.contains('nav-more-open'));
   });
-
-  nav.addEventListener('click', (e) => {
-    if (e.target.closest('a')) setOpen(false);
-  });
-
-  let lastCollapsed = null;
-  let ticking = false;
-  const media = window.matchMedia ? window.matchMedia('(max-width: 820px)') : null;
-
-  const evaluate = () => {
-    const isMobile = media ? media.matches : window.innerWidth <= 820;
-    const shouldCollapse = isMobile && window.scrollY > 20;
-    if (shouldCollapse === lastCollapsed) return;
-    lastCollapsed = shouldCollapse;
-    header.classList.toggle('nav-collapsed', shouldCollapse);
-    if (!shouldCollapse) setOpen(false);
-  };
-
-  const onScroll = () => {
-    if (ticking) return;
-    ticking = true;
-    window.requestAnimationFrame(() => {
-      ticking = false;
-      evaluate();
-    });
-  };
-
-  evaluate();
-  window.addEventListener('scroll', onScroll, { passive: true });
-  if (media && typeof media.addEventListener === 'function') {
-    media.addEventListener('change', evaluate);
-  } else {
-    window.addEventListener('resize', evaluate);
-  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -219,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (window.location.pathname.endsWith('oyun.html')) gameLink.classList.add('active');
     nav.appendChild(gameLink);
   }
-  initMobileNavCollapse(nav);
+  initNavMoreToggle(nav);
 });
 
 function ensureModal() {
