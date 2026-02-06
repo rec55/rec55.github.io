@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="ky">
+<head>
+<title>Үн коштоо мини оюн — Rec 55</title>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="media/website/rec55.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<script defer src="assets/site.js?v=20260206e"></script>
+<script defer src="assets/oyun.js?v=20260206a"></script>
+
+</head>
+<body class="game-page">
+<header class="site-header">
+  <div class="brand">
+    <a href="index.html"><img src="media/website/rec55logoBlackk-1.png" alt="Rec 55"></a>
+    <div class="brand-text">
+      <strong>Rec 55</strong>
+      <span>Кыргыз үн коштоо тобу</span>
+    </div>
+  </div>
+  <nav class="nav"><a href="index.html">Портфолио</a>
+<a href="komanda/index.html">Команда</a>
+<a href="biz-zhonundo.html">Биз жөнүндө</a>
+<a href="baylanysh.html">Байланыш</a>
+<a href="oyun.html" class="active">Оюн</a>
+<a href="oyun-kasting.html">Кастинг</a>
+<a href="oyun-inton.html">Интонация</a></nav>
+</header>
+
+<main class="game">
+  <section class="section game-hero">
+    <div class="game-hero-text">
+      <div class="game-pill">Үн коштоо челленджи</div>
+      <h1>Дубляждагы эң так таймингди таап, эмоцияны туура бер!</h1>
+      <p>5 дубль, 1 мүнөт, таза эмоция. Көңүл‑күйдү туура тандап, жашыл зонада үн кошуп, жогорку упай жыйна.</p>
+      <div class="hero-actions">
+        <button class="btn" id="gameStartHero" type="button">Ойноону баштоо</button>
+        <a class="btn btn-alt" href="#gameRules">Эрежелер</a>
+        <a class="btn btn-alt" href="oyun-kasting.html">Кастинг голоса</a>
+        <a class="btn btn-alt" href="oyun-inton.html">Интонация сынагы</a>
+      </div>
+    </div>
+    <div class="game-hero-art" aria-hidden="true">
+      <div class="wave-card">
+        <div class="wave-row">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <div class="wave-row slow">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <div class="wave-row fast">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <div class="wave-caption">Rec 55 Studio</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section game-stage" id="gameStage">
+    <div class="game-panel scene-panel">
+      <div class="panel-head">
+        <span class="panel-pill">Сцена</span>
+        <span class="panel-meta" id="roundLabel">Дубль 1/5</span>
+      </div>
+      <h2 id="sceneTitle">Кадр даяр</h2>
+      <p class="scene-line" id="sceneLine">Ойун башталганда бул жерге фраза чыгат.</p>
+      <div class="scene-meta">
+        <span id="sceneCharacter">Каарман: —</span>
+        <span id="sceneTempo">Темп: —</span>
+      </div>
+      <div class="mood-grid" id="moodGrid" aria-label="Көңүл-күйдү тандоо"></div>
+      <div class="mood-hint">Алгач эмоцияны танда.</div>
+    </div>
+
+    <div class="game-panel take-panel">
+      <div class="panel-head">
+        <span class="panel-pill">Тайминг</span>
+        <span class="panel-meta">Упай: <strong id="scoreValue">0</strong></span>
+      </div>
+      <div class="timing-track" id="timingTrack" aria-hidden="true">
+        <div class="timing-zone" id="timingZone"></div>
+        <div class="timing-cursor" id="timingCursor"></div>
+      </div>
+      <div class="take-actions">
+        <button class="btn" id="startTake" type="button">Дубль баштоо</button>
+        <button class="btn btn-alt" id="speakBtn" type="button" disabled>Үндө</button>
+      </div>
+      <div class="take-status" id="takeStatus" aria-live="polite">Дубль баштоо үчүн эмоцияны танда.</div>
+      <div class="take-shortcuts">Enter — баштоо, Space — үн кошуу.</div>
+
+      <div class="scoreboard">
+        <div>
+          <div class="score-label">Катар</div>
+          <div class="score-value" id="streakValue">0</div>
+        </div>
+        <div>
+          <div class="score-label">Эң мыкты</div>
+          <div class="score-value" id="bestValue">0</div>
+        </div>
+        <div>
+          <div class="score-label">Миссия</div>
+          <div class="score-value" id="missionValue">Эмоция + тайминг</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section game-rules" id="gameRules">
+    <div class="section-head">
+      <h2>Кандай ойнойбуз?</h2>
+      <p>Бул мини оюн дубляждагы эмоцияны жана таймингди сезүүгө жардам берет.</p>
+    </div>
+    <div class="rules-grid">
+      <div class="rule-card">
+        <h3>1. Эмоция танда</h3>
+        <p>Сценага жараша туура эмоцияны тандасаң, кошумча упай аласың.</p>
+      </div>
+      <div class="rule-card">
+        <h3>2. Жашыл зона</h3>
+        <p>Курсор жашыл зонага киргенде «Үндө» бас. Тактык — жогорку упай.</p>
+      </div>
+      <div class="rule-card">
+        <h3>3. Серия жасоого аракет кыл</h3>
+        <p>Катарынан ийгиликтүү дубль — бонус жана рекорд.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div>© Rec 55 — Кыргыз үн коштоо тобу</div>
+  <div class="footer-links">
+    <a href="https://instagram.com/rec55kg">Instagram</a>
+    <a href="https://www.youtube.com/@rec55kg">YouTube</a>
+    <a href="https://t.me/rec55kg">Telegram</a>
+  </div>
+</footer>
+</body>
+</html>

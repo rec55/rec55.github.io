@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="ky">
+<head>
+<title>Интонация сынагы — Rec 55</title>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="media/website/rec55.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<script defer src="assets/site.js?v=20260206e"></script>
+<script defer src="assets/oyun-inton.js?v=20260206a"></script>
+
+</head>
+<body class="game-page inton-page">
+<header class="site-header">
+  <div class="brand">
+    <a href="index.html"><img src="media/website/rec55logoBlackk-1.png" alt="Rec 55"></a>
+    <div class="brand-text">
+      <strong>Rec 55</strong>
+      <span>Кыргыз үн коштоо тобу</span>
+    </div>
+  </div>
+  <nav class="nav"><a href="index.html">Портфолио</a>
+<a href="komanda/index.html">Команда</a>
+<a href="biz-zhonundo.html">Биз жөнүндө</a>
+<a href="baylanysh.html">Байланыш</a>
+<a href="oyun.html">Оюн</a>
+<a href="oyun-kasting.html">Кастинг</a>
+<a href="oyun-inton.html" class="active">Интонация</a></nav>
+</header>
+
+<main class="game inton-game">
+  <section class="section game-hero">
+    <div class="game-hero-text">
+      <div class="game-pill">Интонация сынагы</div>
+      <h1>Үн сигналын угуп, кайсы эмоция экенин тап.</h1>
+      <p>Шайыр, кайгылуу, ачуулуу же тынч — кайсысы угулат? Угууңду текшер.</p>
+      <div class="hero-actions">
+        <button class="btn" id="intonStartHero" type="button">Ойноону баштоо</button>
+        <a class="btn btn-alt" href="oyun.html">Тайминг оюну</a>
+        <a class="btn btn-alt" href="oyun-kasting.html">Кастинг</a>
+      </div>
+    </div>
+    <div class="game-hero-art" aria-hidden="true">
+      <div class="wave-card">
+        <div class="wave-row">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <div class="wave-row slow">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <div class="wave-row fast">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <div class="wave-caption">Audio Lab</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section sound-stage" id="intonStage">
+    <div class="game-panel sound-panel">
+      <div class="panel-head">
+        <span class="panel-pill">Угуу</span>
+        <span class="panel-meta" id="intonRound">Раунд 1/5</span>
+      </div>
+      <h2 id="intonTitle">Угуу жана тандоо</h2>
+      <p class="scene-line" id="intonLine">Үндү угуп бүткөндөн кийин эмоцияны танда.</p>
+      <div class="sound-controls">
+        <button class="btn" id="intonPlay" type="button">Угуу</button>
+        <div class="sound-bars" id="intonBars" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <label class="volume" for="intonVolume">
+          <span>Үн күчү</span>
+          <input type="range" id="intonVolume" min="0" max="1" step="0.05" value="0.6">
+        </label>
+      </div>
+      <div class="sound-hint">Эскертуу: Үндү ойнотуу үчүн «Угуу» баскычын бас.</div>
+    </div>
+
+    <div class="game-panel sound-panel">
+      <div class="panel-head">
+        <span class="panel-pill">Тандоо</span>
+        <span class="panel-meta">Упай: <strong id="intonScore">0</strong></span>
+      </div>
+      <div class="mood-grid" id="intonOptions" aria-label="Интонация тандоо"></div>
+      <div class="take-status" id="intonStatus" aria-live="polite">Даяр болгондо үн ук.</div>
+      <div class="take-actions">
+        <button class="btn" id="intonNext" type="button" disabled>Кийинки раунд</button>
+        <button class="btn btn-alt" id="intonRestart" type="button">Кайра баштоо</button>
+      </div>
+      <div class="scoreboard">
+        <div>
+          <div class="score-label">Катар</div>
+          <div class="score-value" id="intonStreak">0</div>
+        </div>
+        <div>
+          <div class="score-label">Эң мыкты</div>
+          <div class="score-value" id="intonBest">0</div>
+        </div>
+        <div>
+          <div class="score-label">Миссия</div>
+          <div class="score-value" id="intonMission">Угуу + тандоо</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section game-rules" id="intonRules">
+    <div class="section-head">
+      <h2>Кандай ойнойбуз?</h2>
+      <p>Интонацияны угуу — дубляждагы негизги көндүмдөрдүн бири.</p>
+    </div>
+    <div class="rules-grid">
+      <div class="rule-card">
+        <h3>1. Үн ук</h3>
+        <p>Кыска сигнал эмоционалдык өңгөйдү берет.</p>
+      </div>
+      <div class="rule-card">
+        <h3>2. Эмоция танда</h3>
+        <p>Туура эмоция — максималдуу упай.</p>
+      </div>
+      <div class="rule-card">
+        <h3>3. Катар жасап көр</h3>
+        <p>Катарынан туура жооп — жогорку рекорд.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div>© Rec 55 — Кыргыз үн коштоо тобу</div>
+  <div class="footer-links">
+    <a href="https://instagram.com/rec55kg">Instagram</a>
+    <a href="https://www.youtube.com/@rec55kg">YouTube</a>
+    <a href="https://t.me/rec55kg">Telegram</a>
+  </div>
+</footer>
+</body>
+</html>
