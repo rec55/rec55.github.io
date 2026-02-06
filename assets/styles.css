@@ -32,6 +32,11 @@ img { max-width: 100%; display: block; }
 .nav a { text-decoration: none; color: var(--ink); font-weight: 600; padding: 8px 12px; border-radius: 20px; }
 .nav a.active, .nav a:hover { background: var(--accent); color: #fff; }
 .nav-more { display: contents; }
+.nav-more-anchor {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
 .nav-more-toggle {
   display: none;
   align-items: center;
@@ -53,31 +58,6 @@ img { max-width: 100%; display: block; }
   font-size: 12px;
   line-height: 1;
 }
-.nav-toggle {
-  display: none;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 14px;
-  border: 1px solid rgba(0,0,0,0.12);
-  background: #fff;
-  box-shadow: var(--shadow);
-  cursor: pointer;
-  padding: 0;
-  gap: 4px;
-  flex-direction: column;
-}
-.nav-toggle span {
-  width: 18px;
-  height: 2px;
-  background: var(--ink);
-  border-radius: 999px;
-  transition: transform .2s ease, opacity .2s ease;
-}
-.site-header.nav-open .nav-toggle span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
-.site-header.nav-open .nav-toggle span:nth-child(2) { opacity: 0; }
-.site-header.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
 
 .hero {
   display: grid;
@@ -598,7 +578,9 @@ button.btn { border: none; cursor: pointer; font-family: inherit; }
   body.home .site-header { flex-wrap: nowrap; position: sticky; top: 0; z-index: 100; background: rgba(255, 246, 229, 0.92); backdrop-filter: blur(6px); padding: 12px 6vw; }
   .nav { width: auto; max-width: 320px; flex-wrap: wrap; gap: 4px; }
   .nav a { white-space: nowrap; flex: 1 1 calc(50% - 4px); text-align: center; font-size: 12px; padding: 4px 8px; }
-  .nav-more-toggle { display: inline-flex; }
+  .nav-more-anchor { flex: 1 1 calc(50% - 4px); justify-content: center; }
+  .nav-more-anchor > a { flex: 0 0 auto; }
+  .nav-more-toggle { display: inline-flex; padding: 4px 6px; }
   .nav.nav-more-collapsed .nav-more { display: none; }
   .nav.nav-more-open .nav-more { display: contents; }
   .detail-hero, .actor-hero { grid-template-columns: 1fr; }

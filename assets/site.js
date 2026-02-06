@@ -145,6 +145,19 @@ const WORKS_CATALOG = [
 ];
 
 function initNavMoreToggle(nav) {
+  if (!document.body.classList.contains('home')) return;
+  const media = window.matchMedia ? window.matchMedia('(max-width: 820px)') : null;
+  if (media && !media.matches) {
+    if (nav.dataset.navMoreWatch !== 'true') {
+      nav.dataset.navMoreWatch = 'true';
+      if (typeof media.addEventListener === 'function') {
+        media.addEventListener('change', () => initNavMoreToggle(nav));
+      } else {
+        window.addEventListener('resize', () => initNavMoreToggle(nav));
+      }
+    }
+    return;
+  }
   if (nav.dataset.navMoreInit === 'true') return;
   nav.dataset.navMoreInit = 'true';
 
@@ -152,10 +165,15 @@ function initNavMoreToggle(nav) {
   const anchor = links.find((link) => link.textContent.trim() === 'Биз жөнүндө');
   if (!anchor) return;
 
+  const wrapper = document.createElement('span');
+  wrapper.className = 'nav-more-anchor';
+  anchor.parentNode.insertBefore(wrapper, anchor);
+  wrapper.appendChild(anchor);
+
   const moreWrap = document.createElement('span');
   moreWrap.className = 'nav-more';
 
-  let node = anchor.nextSibling;
+  let node = wrapper.nextSibling;
   while (node) {
     const next = node.nextSibling;
     if (node.nodeType === 1 && node.matches('a')) {
@@ -173,8 +191,8 @@ function initNavMoreToggle(nav) {
   toggle.setAttribute('aria-label', 'Показать меню');
   toggle.innerHTML = '<span class="nav-more-icon" aria-hidden="true">▼</span>';
 
-  anchor.insertAdjacentElement('afterend', toggle);
-  toggle.insertAdjacentElement('afterend', moreWrap);
+  wrapper.appendChild(toggle);
+  wrapper.insertAdjacentElement('afterend', moreWrap);
 
   nav.classList.add('nav-has-more', 'nav-more-collapsed');
 
