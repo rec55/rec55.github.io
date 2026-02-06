@@ -144,19 +144,82 @@ const WORKS_CATALOG = [
   }
 ];
 
+function initMobileNavCollapse(nav) {
+  const header = nav.closest('.site-header');
+  if (!header) return;
+  if (header.dataset.mobileNavInit === 'true') return;
+  header.dataset.mobileNavInit = 'true';
+
+  if (!nav.id) nav.id = 'siteNav';
+
+  const toggle = document.createElement('button');
+  toggle.type = 'button';
+  toggle.className = 'nav-toggle';
+  toggle.setAttribute('aria-label', 'Меню');
+  toggle.setAttribute('aria-controls', nav.id);
+  toggle.setAttribute('aria-expanded', 'false');
+  toggle.innerHTML = '<span></span><span></span><span></span>';
+  header.insertBefore(toggle, nav);
+
+  const setOpen = (open) => {
+    header.classList.toggle('nav-open', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  };
+
+  toggle.addEventListener('click', () => {
+    setOpen(!header.classList.contains('nav-open'));
+  });
+
+  nav.addEventListener('click', (e) => {
+    if (e.target.closest('a')) setOpen(false);
+  });
+
+  let lastCollapsed = null;
+  let ticking = false;
+  const media = window.matchMedia ? window.matchMedia('(max-width: 820px)') : null;
+
+  const evaluate = () => {
+    const isMobile = media ? media.matches : window.innerWidth <= 820;
+    const shouldCollapse = isMobile && window.scrollY > 20;
+    if (shouldCollapse === lastCollapsed) return;
+    lastCollapsed = shouldCollapse;
+    header.classList.toggle('nav-collapsed', shouldCollapse);
+    if (!shouldCollapse) setOpen(false);
+  };
+
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(() => {
+      ticking = false;
+      evaluate();
+    });
+  };
+
+  evaluate();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  if (media && typeof media.addEventListener === 'function') {
+    media.addEventListener('change', evaluate);
+  } else {
+    window.addEventListener('resize', evaluate);
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const nav = document.querySelector('.nav');
   if (!nav) return;
   const hasGame = nav.querySelector('a[href*="oyun.html"]');
-  if (hasGame) return;
-  const indexLink = Array.from(nav.querySelectorAll('a')).find((link) => /index\.html/.test(link.getAttribute('href') || ''));
-  const baseHref = indexLink ? indexLink.getAttribute('href') || '' : 'index.html';
-  const base = baseHref.replace(/index\.html.*$/, '');
-  const gameLink = document.createElement('a');
-  gameLink.href = `${base}oyun.html`;
-  gameLink.textContent = 'Оюн';
-  if (window.location.pathname.endsWith('oyun.html')) gameLink.classList.add('active');
-  nav.appendChild(gameLink);
+  if (!hasGame) {
+    const indexLink = Array.from(nav.querySelectorAll('a')).find((link) => /index\.html/.test(link.getAttribute('href') || ''));
+    const baseHref = indexLink ? indexLink.getAttribute('href') || '' : 'index.html';
+    const base = baseHref.replace(/index\.html.*$/, '');
+    const gameLink = document.createElement('a');
+    gameLink.href = `${base}oyun.html`;
+    gameLink.textContent = 'Оюн';
+    if (window.location.pathname.endsWith('oyun.html')) gameLink.classList.add('active');
+    nav.appendChild(gameLink);
+  }
+  initMobileNavCollapse(nav);
 });
 
 function ensureModal() {
