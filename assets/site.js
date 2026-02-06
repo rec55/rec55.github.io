@@ -304,6 +304,17 @@ document.addEventListener('DOMContentLoaded', () => {
 function initMobileCoverNav() {
   const isMobile = window.matchMedia && window.matchMedia('(max-width: 820px)').matches;
   if (!isMobile) return;
+  let activeCover = null;
+
+  const stopPreview = (cover) => {
+    if (!cover) return;
+    cover.dataset.previewActive = 'false';
+    cover.classList.remove('previewing');
+    const iframe = cover.querySelector('iframe[data-preview="true"]');
+    if (iframe) iframe.remove();
+    if (activeCover === cover) activeCover = null;
+  };
+
   const startPreview = (cover) => {
     if (!cover || cover.dataset.previewActive === 'true') return false;
     if (cover.querySelector('iframe')) return false;
@@ -311,15 +322,18 @@ function initMobileCoverNav() {
     if (!videoBtn) return false;
     const src = videoBtn.getAttribute('data-video') || '';
     if (!isYouTubeUrl(src)) return false;
+    if (activeCover && activeCover !== cover) stopPreview(activeCover);
     const iframe = document.createElement('iframe');
     iframe.setAttribute('loading', 'eager');
     iframe.setAttribute('allow', 'autoplay; encrypted-media; picture-in-picture');
     iframe.setAttribute('aria-hidden', 'true');
+    iframe.setAttribute('data-preview', 'true');
     iframe.src = buildPreviewEmbed(src);
     cover.appendChild(iframe);
     cover.classList.add('previewing');
     cover.dataset.previewActive = 'true';
     cover.dataset.previewArmed = 'false';
+    activeCover = cover;
     return true;
   };
 
@@ -330,6 +344,39 @@ function initMobileCoverNav() {
     if (e.target.closest('a')) return;
     startPreview(cover);
   }, { passive: true });
+
+  const handleMove = (clientX, clientY) => {
+    const el = document.elementFromPoint(clientX, clientY);
+    const cover = el ? el.closest('.work-cover') : null;
+    if (cover && cover !== activeCover) {
+      startPreview(cover);
+      return;
+    }
+    if (!cover && activeCover) stopPreview(activeCover);
+  };
+
+  let moveTicking = false;
+  const onTouchMove = (e) => {
+    if (moveTicking) return;
+    moveTicking = true;
+    window.requestAnimationFrame(() => {
+      moveTicking = false;
+      const touch = e.touches && e.touches[0];
+      if (touch) handleMove(touch.clientX, touch.clientY);
+    });
+  };
+  document.addEventListener('touchmove', onTouchMove, { passive: true });
+
+  const onPointerMove = (e) => {
+    if (e.pointerType && e.pointerType !== 'touch') return;
+    if (moveTicking) return;
+    moveTicking = true;
+    window.requestAnimationFrame(() => {
+      moveTicking = false;
+      handleMove(e.clientX, e.clientY);
+    });
+  };
+  document.addEventListener('pointermove', onPointerMove, { passive: true });
 
   document.addEventListener('click', (e) => {
     const cover = e.target.closest('.work-cover');
