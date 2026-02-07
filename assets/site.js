@@ -109,7 +109,7 @@ const WORKS_CATALOG = [
   {
     title: "Синбад - Жети Деңиздин Дастаны",
     href: "work/sinbad-zheti-denizdin-dastany.html",
-    image: "media/posts/25/sinbad-poster-kyrgyz.png",
+    image: "media/posts/25/sinbad-poster-kyrgyz.jpg",
     tag: "Мультфильмдер"
   },
   {
@@ -143,6 +143,15 @@ const WORKS_CATALOG = [
     tag: "Аниме"
   }
 ];
+
+function coverStyleFromImage(image) {
+  const match = image.match(/(.*?media\/posts\/\d+\/)([^/]+)\.(jpg|jpeg|png|webp)$/i);
+  if (!match) {
+    return `background-image:url('${image}')`;
+  }
+  const [, prefix, name, ext] = match;
+  return `--cover-fallback: url('${image}'); --cover-xs: url('${prefix}responsive/${name}-xs.${ext}'); --cover-sm: url('${prefix}responsive/${name}-sm.${ext}'); --cover-md: url('${prefix}responsive/${name}-md.${ext}'); --cover-lg: url('${prefix}responsive/${name}-lg.${ext}'); --cover-xl: url('${prefix}responsive/${name}-xl.${ext}')`;
+}
 
 function initNavMoreToggle(nav) {
   if (!document.body.classList.contains('home')) return;
@@ -620,9 +629,10 @@ function renderRecommendations() {
     const cards = picks.map((item) => {
       const href = `../${item.href.replace(/^\.?\//, '')}`;
       const image = `../${item.image.replace(/^\.?\//, '')}`;
+      const coverStyle = coverStyleFromImage(image);
       return `
       <article class="work-card">
-        <div class="work-cover" style="background-image:url('${image}')"></div>
+        <div class="work-cover" style="${coverStyle}"></div>
         <div class="work-body">
           <h3><a href="${href}">${item.title}</a></h3>
           <div class="work-meta">

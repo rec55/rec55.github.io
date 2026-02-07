@@ -192,6 +192,12 @@ button.btn { border: none; cursor: pointer; font-family: inherit; }
 .work-body { padding: 18px; display: grid; gap: 10px; }
 
 .join-cta-cover {
+  --cover-fallback: url("../media/website/rec55team.jpg");
+  --cover-xs: url("../media/website/rec55team.jpg");
+  --cover-sm: url("../media/website/rec55team.jpg");
+  --cover-md: url("../media/website/rec55team.jpg");
+  --cover-lg: url("../media/website/rec55team.jpg");
+  --cover-xl: url("../media/website/rec55team.jpg");
   background-image: url("../media/website/rec55team.jpg");
   color: #fff;
   overflow: hidden;
@@ -211,7 +217,7 @@ button.btn { border: none; cursor: pointer; font-family: inherit; }
   display: grid;
   gap: 4px;
 }
-.join-cta-title strong { font-size: 22px; letter-spacing: 0.2px; }
+.join-cta-title strong { font-size: 20px; letter-spacing: 0.2px; }
 .join-cta-title span { font-size: 13px; opacity: 0.9; }
 .game-cover.wave-cover {
   background: transparent;
@@ -459,6 +465,40 @@ button.btn { border: none; cursor: pointer; font-family: inherit; }
   height: 100%;
   border: 0;
   pointer-events: none;
+}
+.work-cover,
+.detail-cover {
+  background-image: var(--cover-fallback);
+  background-image: -webkit-image-set(
+    var(--cover-xs) 1x,
+    var(--cover-sm) 1.5x,
+    var(--cover-md) 2x,
+    var(--cover-lg) 2.5x,
+    var(--cover-xl) 3x
+  );
+  background-image: image-set(
+    var(--cover-xs) 1x,
+    var(--cover-sm) 1.5x,
+    var(--cover-md) 2x,
+    var(--cover-lg) 2.5x,
+    var(--cover-xl) 3x
+  );
+}
+@media (max-width: 720px) {
+  .work-cover,
+  .detail-cover {
+    background-image: var(--cover-xs);
+    background-image: -webkit-image-set(
+      var(--cover-xs) 1x,
+      var(--cover-sm) 2x,
+      var(--cover-md) 3x
+    );
+    background-image: image-set(
+      var(--cover-xs) 1x,
+      var(--cover-sm) 2x,
+      var(--cover-md) 3x
+    );
+  }
 }
 .detail-info h1 { margin: 8px 0; }
 .detail-meta { display: flex; gap: 18px; font-size: 13px; opacity: .7; }
