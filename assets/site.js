@@ -141,6 +141,18 @@ const WORKS_CATALOG = [
     href: "work/chynzhyr-araa-adam-kyrgyz-un-koshtoosunda.html",
     image: "media/posts/17/Chynzhyr-Araa-Adam.jpeg",
     tag: "Аниме"
+  },
+  {
+    title: "БИР ТҮРДҮҮ СЫЙКЫР 2015",
+    href: "work/bir-turduu-syikyr-2015.html",
+    image: "media/posts/30/bir-turduu-syikyr-2015.jpg",
+    tag: "Мультфильмдер"
+  },
+  {
+    title: "Ушул Фарфор Куурчак Ашык Болду - Кыргызча Трейлер",
+    href: "work/ushul-farfor-kuurchak-ashyk-boldu-kyrgyzcha-treiler.html",
+    image: "media/posts/31/farfor-kuurchak.jpg",
+    tag: "Аниме"
   }
 ];
 
@@ -418,8 +430,10 @@ function normalizeEmbed(src) {
       if (!u.searchParams.has('autoplay')) u.searchParams.set('autoplay', '1');
       return u.toString();
     }
-    if (host.includes('vkvideo.ru')) {
+    if (host.includes('vkvideo.ru') || host.includes('vk.com')) {
       if (!u.searchParams.has('autoplay')) u.searchParams.set('autoplay', '1');
+      u.searchParams.set('mute', '0');
+      u.searchParams.set('muted', '0');
       return u.toString();
     }
     return u.toString();
