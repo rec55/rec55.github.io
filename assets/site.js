@@ -447,55 +447,6 @@ function initMobileCoverNav() {
 
 document.addEventListener('DOMContentLoaded', initMobileCoverNav);
 
-function initDesktopCoverPreview() {
-  const media = window.matchMedia ? window.matchMedia('(hover: hover) and (pointer: fine)') : null;
-  if (!media || !media.matches) return;
-  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-  let activeCover = null;
-
-  const stopPreview = (cover) => {
-    if (!cover) return;
-    cover.dataset.previewActive = 'false';
-    cover.classList.remove('previewing');
-    const iframe = cover.querySelector('iframe[data-preview="true"]');
-    if (iframe) iframe.remove();
-    if (activeCover === cover) activeCover = null;
-  };
-
-  const startPreview = (cover) => {
-    if (!cover || cover.dataset.previewActive === 'true') return false;
-    if (cover.querySelector('iframe')) return false;
-    const videoBtn = cover.querySelector('.play-btn[data-video]');
-    if (!videoBtn) return false;
-    const src = videoBtn.getAttribute('data-video') || '';
-    if (!isPreviewableUrl(src)) return false;
-    if (activeCover && activeCover !== cover) stopPreview(activeCover);
-    const iframe = document.createElement('iframe');
-    iframe.setAttribute('loading', 'eager');
-    iframe.setAttribute('allow', 'autoplay; encrypted-media; picture-in-picture');
-    iframe.setAttribute('aria-hidden', 'true');
-    iframe.setAttribute('data-preview', 'true');
-    iframe.src = buildPreviewEmbed(src);
-    cover.appendChild(iframe);
-    cover.classList.add('previewing');
-    cover.dataset.previewActive = 'true';
-    activeCover = cover;
-    return true;
-  };
-
-  document.querySelectorAll('.work-cover').forEach((cover) => {
-    cover.addEventListener('mouseenter', () => startPreview(cover));
-    cover.addEventListener('mouseleave', () => stopPreview(cover));
-  });
-
-  window.addEventListener('blur', () => {
-    if (activeCover) stopPreview(activeCover);
-  });
-}
-
-document.addEventListener('DOMContentLoaded', initDesktopCoverPreview);
-
 function normalizeEmbed(src) {
   if (!src) return '';
   const muteOnMobile = shouldMuteOnMobile(src);
