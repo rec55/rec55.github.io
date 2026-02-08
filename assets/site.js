@@ -342,7 +342,7 @@ function initMobileCoverNav() {
     const videoBtn = cover.querySelector('.play-btn[data-video]');
     if (!videoBtn) return false;
     const src = videoBtn.getAttribute('data-video') || '';
-    if (!isPreviewableUrl(src)) return false;
+    if (!isYouTubeUrl(src)) return false;
     if (activeCover && activeCover !== cover) stopPreview(activeCover);
     const iframe = document.createElement('iframe');
     iframe.setAttribute('loading', 'eager');
@@ -516,6 +516,17 @@ function buildPreviewEmbed(src) {
     return embed.toString();
   } catch (e) {
     return src;
+  }
+}
+
+function isYouTubeUrl(src) {
+  if (!src) return false;
+  try {
+    const u = new URL(src, window.location.href);
+    const host = u.hostname.replace('www.', '');
+    return host.includes('youtube.com') || host.includes('youtu.be');
+  } catch (e) {
+    return /youtube\.com|youtu\.be/i.test(src);
   }
 }
 
