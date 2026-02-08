@@ -2,6 +2,7 @@ let modal = document.getElementById('playerModal');
 let modalPlayer = modal ? modal.querySelector('.modal-player') : null;
 let modalTitle = modal ? modal.querySelector('#playerTitle') : null;
 let closeBtn = modal ? modal.querySelector('.modal-close') : null;
+let unmuteBtn = modal ? modal.querySelector('.modal-unmute') : null;
 
 const WORKS_CATALOG = [
   {
@@ -249,37 +250,70 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function ensureModal() {
-  if (modal && modalPlayer) return;
-  modal = document.createElement('div');
-  modal.id = 'playerModal';
-  modal.className = 'modal';
-  modal.setAttribute('aria-hidden', 'true');
-  modal.innerHTML = `
-    <div class="modal-content">
-      <button class="modal-close" aria-label="Жабуу">×</button>
-      <div class="modal-title" id="playerTitle"></div>
-      <div class="modal-player"></div>
-    </div>
-  `;
-  document.body.appendChild(modal);
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'playerModal';
+    modal.className = 'modal';
+    modal.setAttribute('aria-hidden', 'true');
+    modal.innerHTML = `
+      <div class="modal-content">
+        <button class="modal-close" aria-label="Жабуу">×</button>
+        <div class="modal-title" id="playerTitle"></div>
+        <div class="modal-player"></div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+  }
   modalPlayer = modal.querySelector('.modal-player');
   modalTitle = modal.querySelector('#playerTitle');
   closeBtn = modal.querySelector('.modal-close');
-  if (closeBtn) closeBtn.addEventListener('click', closePlayer);
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) closePlayer();
-  });
+  const modalContent = modal.querySelector('.modal-content');
+  if (modalContent && !modalContent.querySelector('.modal-unmute')) {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'modal-unmute';
+    btn.textContent = 'Включить звук';
+    btn.setAttribute('aria-label', 'Включить звук');
+    modalContent.appendChild(btn);
+  }
+  unmuteBtn = modal.querySelector('.modal-unmute');
+  if (unmuteBtn && unmuteBtn.dataset.bound !== 'true') {
+    unmuteBtn.dataset.bound = 'true';
+    unmuteBtn.addEventListener('click', () => {
+      if (!modalPlayer) return;
+      const iframe = modalPlayer.querySelector('iframe');
+      if (!iframe) return;
+      const current = iframe.getAttribute('src') || '';
+      const next = updateMuteParam(current, false);
+      iframe.setAttribute('src', next);
+      unmuteBtn.style.display = 'none';
+    });
+  }
+  if (closeBtn && closeBtn.dataset.bound !== 'true') {
+    closeBtn.dataset.bound = 'true';
+    closeBtn.addEventListener('click', closePlayer);
+  }
+  if (modal && modal.dataset.clickBound !== 'true') {
+    modal.dataset.clickBound = 'true';
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closePlayer();
+    });
+  }
 }
 
 function openPlayer(src, title) {
   ensureModal();
   if (!modal || !modalPlayer) return;
   const normalized = normalizeEmbed(src);
+  const shouldMute = shouldMuteOnMobile(src);
   if (modalTitle) {
     modalTitle.textContent = title || '';
     modalTitle.style.display = title ? 'block' : 'none';
   }
   modalPlayer.innerHTML = `<iframe src="${normalized}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+  if (unmuteBtn) {
+    unmuteBtn.style.display = shouldMute ? 'inline-flex' : 'none';
+  }
   modal.style.display = 'flex';
   modal.setAttribute('aria-hidden', 'false');
 }
@@ -287,14 +321,10 @@ function closePlayer() {
   if (!modal || !modalPlayer) return;
   modalPlayer.innerHTML = '';
   if (modalTitle) modalTitle.textContent = '';
+  if (unmuteBtn) unmuteBtn.style.display = 'none';
   modal.style.display = 'none';
   modal.setAttribute('aria-hidden', 'true');
 }
-
-if (closeBtn) closeBtn.addEventListener('click', closePlayer);
-if (modal) modal.addEventListener('click', (e) => {
-  if (e.target === modal) closePlayer();
-});
 
 function handlePlayClick(e) {
   const btn = e.target.closest('.play-btn');
@@ -468,26 +498,82 @@ document.addEventListener('DOMContentLoaded', initDesktopCoverPreview);
 
 function normalizeEmbed(src) {
   if (!src) return '';
+  const muteOnMobile = shouldMuteOnMobile(src);
   try {
     const u = new URL(src, window.location.href);
     const host = u.hostname.replace('www.', '');
     if (host.includes('youtube.com') && u.pathname.includes('/embed/')) {
       if (!u.searchParams.has('autoplay')) u.searchParams.set('autoplay', '1');
+      if (muteOnMobile) {
+        u.searchParams.set('mute', '1');
+        u.searchParams.set('muted', '1');
+        u.searchParams.set('playsinline', '1');
+      }
       return u.toString();
     }
     if (host.includes('vimeo.com')) {
       if (!u.searchParams.has('autoplay')) u.searchParams.set('autoplay', '1');
+      if (muteOnMobile) {
+        u.searchParams.set('mute', '1');
+        u.searchParams.set('muted', '1');
+        u.searchParams.set('playsinline', '1');
+      }
       return u.toString();
     }
     if (host.includes('vkvideo.ru') || host.includes('vk.com')) {
       if (!u.searchParams.has('autoplay')) u.searchParams.set('autoplay', '1');
-      u.searchParams.set('mute', '0');
-      u.searchParams.set('muted', '0');
+      if (muteOnMobile) {
+        u.searchParams.set('mute', '1');
+        u.searchParams.set('muted', '1');
+        u.searchParams.set('playsinline', '1');
+      } else {
+        u.searchParams.set('mute', '0');
+        u.searchParams.set('muted', '0');
+      }
       return u.toString();
     }
     return u.toString();
   } catch (e) {
     return src;
+  }
+}
+
+function updateMuteParam(src, muted) {
+  if (!src) return '';
+  try {
+    const u = new URL(src, window.location.href);
+    if (!u.searchParams.has('autoplay')) u.searchParams.set('autoplay', '1');
+    if (muted) {
+      u.searchParams.set('mute', '1');
+      u.searchParams.set('muted', '1');
+      u.searchParams.set('playsinline', '1');
+    } else {
+      u.searchParams.set('mute', '0');
+      u.searchParams.set('muted', '0');
+    }
+    return u.toString();
+  } catch (e) {
+    return src;
+  }
+}
+
+function isMobileViewport() {
+  return window.matchMedia && window.matchMedia('(max-width: 820px)').matches;
+}
+
+function shouldMuteOnMobile(src) {
+  if (!isMobileViewport()) return false;
+  return isAutoplayProvider(src);
+}
+
+function isAutoplayProvider(src) {
+  if (!src) return false;
+  try {
+    const u = new URL(src, window.location.href);
+    const host = u.hostname.replace('www.', '');
+    return host.includes('youtube.com') || host.includes('youtu.be') || host.includes('vimeo.com') || host.includes('vkvideo.ru') || host.includes('vk.com');
+  } catch (e) {
+    return /youtube\.com|youtu\.be|vimeo\.com|vkvideo\.ru|vk\.com/i.test(src);
   }
 }
 
