@@ -166,8 +166,37 @@ function coverStyleFromImage(image) {
   return `--cover-fallback: url('${image}'); --cover-xs: url('${prefix}responsive/${name}-xs.${ext}'); --cover-sm: url('${prefix}responsive/${name}-sm.${ext}'); --cover-md: url('${prefix}responsive/${name}-md.${ext}'); --cover-lg: url('${prefix}responsive/${name}-lg.${ext}'); --cover-xl: url('${prefix}responsive/${name}-xl.${ext}')`;
 }
 
+function pageKeyFromPath(pathname) {
+  const clean = (pathname || '').toLowerCase().replace(/\/+$/, '');
+  if (!clean) return '/';
+  const parts = clean.split('/').filter(Boolean);
+  if (parts.length === 0) return '/';
+  if (parts[parts.length - 1] === 'index.html' && parts.length >= 2) {
+    return `/${parts[parts.length - 2]}`;
+  }
+  return `/${parts[parts.length - 1]}`;
+}
+
+function shouldCollapseMobileNav() {
+  if (document.body.classList.contains('home')) return true;
+  const menuPages = new Set([
+    '/komanda',
+    '/biz-zhonundo',
+    '/biz-zhonundo.html',
+    '/baylanysh',
+    '/baylanysh.html',
+    '/oyun',
+    '/oyun.html',
+    '/oyun-kasting',
+    '/oyun-kasting.html',
+    '/oyun-inton',
+    '/oyun-inton.html'
+  ]);
+  return !menuPages.has(pageKeyFromPath(window.location.pathname || ''));
+}
+
 function initNavMoreToggle(nav) {
-  if (!document.body.classList.contains('home')) return;
+  if (!shouldCollapseMobileNav()) return;
   const media = window.matchMedia ? window.matchMedia('(max-width: 820px)') : null;
   if (media && !media.matches) {
     if (nav.dataset.navMoreWatch !== 'true') {
