@@ -183,9 +183,14 @@ function initNavMoreToggle(nav) {
   if (nav.dataset.navMoreInit === 'true') return;
   nav.dataset.navMoreInit = 'true';
 
-  const links = Array.from(nav.querySelectorAll('a'));
-  const anchor = links.find((link) => link.textContent.trim() === 'Биз жөнүндө');
+  const visibleLabels = new Set(['Портфолио', 'Команда']);
+  const links = Array.from(nav.children).filter((node) => node.nodeType === 1 && node.matches('a'));
+
+  const anchor = links.find((link) => link.textContent.trim() === 'Команда');
   if (!anchor) return;
+
+  const hiddenLinks = links.filter((link) => !visibleLabels.has(link.textContent.trim()));
+  if (hiddenLinks.length === 0) return;
 
   const wrapper = document.createElement('span');
   wrapper.className = 'nav-more-anchor';
@@ -195,14 +200,9 @@ function initNavMoreToggle(nav) {
   const moreWrap = document.createElement('span');
   moreWrap.className = 'nav-more';
 
-  let node = wrapper.nextSibling;
-  while (node) {
-    const next = node.nextSibling;
-    if (node.nodeType === 1 && node.matches('a')) {
-      moreWrap.appendChild(node);
-    }
-    node = next;
-  }
+  hiddenLinks.forEach((link) => {
+    moreWrap.appendChild(link);
+  });
 
   if (moreWrap.children.length === 0) return;
 
