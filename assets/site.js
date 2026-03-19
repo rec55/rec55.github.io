@@ -264,17 +264,28 @@ function initNavMoreToggle(nav) {
 document.addEventListener('DOMContentLoaded', () => {
   const nav = document.querySelector('.nav');
   if (!nav) return;
+  const indexLink = Array.from(nav.querySelectorAll('a')).find((link) => /index\.html/.test(link.getAttribute('href') || ''));
+  const baseHref = indexLink ? indexLink.getAttribute('href') || '' : 'index.html';
+  const base = baseHref.replace(/index\.html.*$/, '');
+
   const hasGame = nav.querySelector('a[href*="oyun.html"]');
   if (!hasGame) {
-    const indexLink = Array.from(nav.querySelectorAll('a')).find((link) => /index\.html/.test(link.getAttribute('href') || ''));
-    const baseHref = indexLink ? indexLink.getAttribute('href') || '' : 'index.html';
-    const base = baseHref.replace(/index\.html.*$/, '');
     const gameLink = document.createElement('a');
     gameLink.href = `${base}oyun.html`;
     gameLink.textContent = 'Оюн';
     if (window.location.pathname.endsWith('oyun.html')) gameLink.classList.add('active');
     nav.appendChild(gameLink);
   }
+
+  const hasMerch = nav.querySelector('a[href*="merch/index.html"]');
+  if (!hasMerch) {
+    const merchLink = document.createElement('a');
+    merchLink.href = `${base}merch/index.html`;
+    merchLink.textContent = 'merch55';
+    if (pageKeyFromPath(window.location.pathname || '') === '/merch') merchLink.classList.add('active');
+    nav.appendChild(merchLink);
+  }
+
   initNavMoreToggle(nav);
 });
 
