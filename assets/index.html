@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<title>merch55 — каталог мерча Rec 55</title>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Минималистичный каталог мерча студии озвучки Rec 55 с корзиной и оформлением через WhatsApp.">
+<link rel="icon" href="../media/website/rec55.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;family=Rubik:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/merch.css">
+<script defer src="../assets/merch.js"></script>
+</head>
+<body>
+<div class="page-shell">
+  <header class="merch-header">
+    <a class="merch-brand" href="index.html" aria-label="Перейти на главную страницу merch55">
+      <img src="../media/website/rec55logoBlackk-1.png" alt="Rec 55">
+      <span class="brand-copy">
+        <span class="brand-name">merch55</span>
+        <span class="brand-note">by Rec 55</span>
+      </span>
+    </a>
+
+    <nav class="merch-nav" aria-label="Навигация страницы">
+      <a href="#catalog">Каталог</a>
+      <a href="#delivery">Доставка</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+
+    <a class="header-link" href="../index.html">rec55.kg</a>
+
+    <button class="cart-toggle" type="button" aria-expanded="false" aria-controls="cartDrawer" data-cart-toggle>
+      <span>Корзина</span>
+      <span class="cart-count" data-cart-count>0</span>
+    </button>
+  </header>
+
+  <main>
+    <section class="catalog-section" id="catalog">
+      <div class="catalog-head">
+        <div>
+          <p class="eyebrow">merch55 / drop 01</p>
+        </div>
+      </div>
+
+      <div class="catalog-grid" data-catalog-grid></div>
+
+      <noscript>
+        <p class="catalog-note">Для каталога и корзины нужен включённый JavaScript.</p>
+      </noscript>
+    </section>
+
+    <section class="info-grid">
+      <article class="info-card" id="delivery">
+        <p class="eyebrow">Доставка</p>
+        <h2>Как оформить</h2>
+        <ul class="info-list">
+          <li>Откройте карточку товара или выберите вариант сразу в каталоге.</li>
+          <li>Добавьте нужные позиции в корзину.</li>
+          <li>Проверьте количество и итоговую сумму.</li>
+          <li>Отправьте один собранный заказ в WhatsApp.</li>
+        </ul>
+      </article>
+
+      <article class="info-card" id="faq">
+        <p class="eyebrow">FAQ</p>
+        <h2>Частые вопросы</h2>
+        <div class="faq-list">
+          <details class="faq-item" open>
+            <summary>Можно открывать отдельную страницу товара?</summary>
+            <p>Да. Каждая карточка ведёт на свою страницу товара с отдельной галереей, описанием и тем же механизмом выбора варианта.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Вариант товара сохраняется в корзине?</summary>
+            <p>Да. Для каждой позиции хранится выбранный размер или формат, поэтому одинаковые товары с разными вариантами не смешиваются.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Можно оформить несколько товаров одним заказом?</summary>
+            <p>Да. Корзина собирает все позиции в одно сообщение для WhatsApp, чтобы не оформлять каждую отдельно.</p>
+          </details>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="merch-footer">
+    <div>© merch55 / Rec 55</div>
+    <div class="footer-links">
+      <a href="https://instagram.com/rec55kg">Instagram</a>
+      <a href="https://www.youtube.com/@rec55kg">YouTube</a>
+      <a href="https://t.me/rec55kg">Telegram</a>
+    </div>
+  </footer>
+
+  <div class="cart-backdrop" data-cart-backdrop></div>
+  <aside class="cart-drawer" id="cartDrawer" aria-hidden="true">
+    <div class="cart-panel">
+      <div class="cart-header">
+        <div>
+          <p class="eyebrow">merch55</p>
+          <h2>Корзина</h2>
+        </div>
+        <button class="cart-close" type="button" aria-label="Закрыть корзину" data-cart-close>×</button>
+      </div>
+
+      <div class="cart-empty" data-cart-empty>Корзина пока пустая. Добавьте товары из каталога.</div>
+      <div class="cart-items hidden" data-cart-items></div>
+
+      <div class="cart-footer">
+        <div class="cart-total">
+          <span>Итого</span>
+          <strong data-cart-total>0 сом</strong>
+        </div>
+        <button class="btn btn-primary" type="button" data-cart-checkout disabled>Оформить в WhatsApp</button>
+        <button class="btn btn-secondary" type="button" data-cart-clear disabled>Очистить корзину</button>
+      </div>
+    </div>
+  </aside>
+</div>
+</body>
+</html>
